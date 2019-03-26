@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>QuaggaJS example</title>
+    <style type="text/css">
+      #interactive.viewport > canvas, #interactive.viewport > video {
+        max-width: 100%;
+        width: 100%;
+      }
+    </style>
+</head>
+
+<body>
+  <h1>Scan a Code128 barcode using QuaggaJS</h1>
+  <label>Result:</label>
+  <p id="result"></p>
+  <div>
+    <div id="interactive" class="viewport"></div>
+  </div>
+
+  <p>You can also use ZXing to read barcodes in the browser. Try it out: <a href="index.html">ZXing Test</a></p>
+  
+  <script type="text/javascript" src="https://unpkg.com/quagga@latest"></script>
+  <script type="text/javascript">
+    var App = {
+      init: function() {
+        const width = document.documentElement.clientWidth
+        const config = {
+          inputStream: {
+            type: 'LiveStream',
+            constraints: {
+              width: {min: 640},
+              height: {min: 480},
+              facingMode: "environment",
+              aspectRatio: {min: 1, max: 2}
+            }
+          },
+          decoder: {
+            readers : ['code_128_reader']
+          }
+        }
+        Quagga.init(config, function(err) {
+          if (err) {
+            document.getElementById('result').textContent = err
+            return
+          }
+
+          Quagga.start()
+        })
+      },
+    }
+
+    App.init();
+
+    Quagga.onDetected(function(result) {
+      var code = result.codeResult.code
+
+      document.getElementById('result').textContent = code
+    })
+  </script>
+</body>
+</html>
