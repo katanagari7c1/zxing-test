@@ -9,24 +9,24 @@
 </head>
 
 <body>
-  <h1>Scan a QRCode using ZXing</h1>
+  <h1>Scan EAN13, CODE128 and QRCode using ZXing</h1>
 
   <label>Result:</label>
   <p id="result"></p>
   <div>
-    <video id="video" width="640" height="480" style="border: 1px solid gray"></video>
+    <video id="video" width="800" height="600" style="border: 1px solid gray"></video>
   </div>
-
-  <p>You can also use QuaggaJS to read barcodes in the browser. Try it out: <a href="quagga.html">QuaggaJS Test</a></p>
 
   <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
   <script type="text/javascript">
     window.addEventListener('load', function () {
-      const codeReader = new ZXing.BrowserQRCodeReader()
+      const hints = new Map();
+      hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.QR_CODE])
+      const codeReader = new ZXing.BrowserMultiFormatReader(hints)
       codeReader.getVideoInputDevices()
         .then((videoInputDevices) => {
           const device = videoInputDevices[0]
-          console.log(device.label + ' - ' + device.deviceId)
+          console.log(JSON.stringify(videoInputDevices))
         	return codeReader.decodeFromInputVideoDevice(device.deviceId, 'video')
         })
         .then((result) => {
