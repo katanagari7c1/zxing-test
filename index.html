@@ -34,7 +34,10 @@
       // MediaTrackConstraints
       let videoConstraints = {
         facingMode: 'environment',
-        torch: true
+        torch: true,
+        width: {
+          min: 1024
+        }
       }
 
       document.getElementById('log').textContent += 'constraints: ' + JSON.stringify(videoConstraints) + '\r\n'
