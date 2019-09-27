@@ -20,6 +20,9 @@
   <p id="result"></p>
   Log:
   <p id="log" style="white-space: pre"></p>
+
+  <button onclick="toggleTorch()">Torch</button>
+  <button onclick="toggleZoom()">Zoom</button>
   <div>
     <video id="video" width="100%" style="border: 1px solid gray"></video>
   </div>
@@ -53,11 +56,24 @@
         })
     })
 
-    setTimeout(()=> {
-      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ zoom: 2 }]})
+    var torchEnabled = false;
+    var toggleTorch = function() {
+      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ torch: !torchEnabled }]})
+              .then(() => document.getElementById('log').textContent += 'torch toggled\r\n' )
+              .catch((err) => document.getElementById('log').textContent += 'error with torch' + err + '\r\n')
+
+      torchEnabled = !torchEnabled
+    }
+
+    var zoomActivated = false
+    var toggleZoom = function() {
+      const zoomLevel = zoomActivated ? 2 : 1
+      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ zoom: zoomLevel }]})
               .then(() => document.getElementById('log').textContent += 'zoom activated\r\n' )
               .catch((err) => document.getElementById('log').textContent += 'error turning on zoom' + err + '\r\n')
-    }, 5000);
+
+      zoomActivated = !zoomActivated
+    }
   </script>
 </body>
 </html>
