@@ -34,10 +34,9 @@
       // MediaTrackConstraints
       let videoConstraints = {
         facingMode: 'environment',
-        torch: true,
         width: {
           min: 1024
-        }
+        },
       }
 
       document.getElementById('log').textContent += 'constraints: ' + JSON.stringify(videoConstraints) + '\r\n'
@@ -53,6 +52,12 @@
           document.getElementById('result').textContent = err
         })
     })
+
+    setTimeout(()=> {
+      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ torch: true }]})
+              .then(() => document.getElementById('log').textContent += 'torch turned on\r\n' )
+              .catch((err) => document.getElementById('log').textContent += 'error turning on torch' + err + '\r\n')
+    }, 5000);
   </script>
 </body>
 </html>
