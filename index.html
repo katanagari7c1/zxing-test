@@ -70,7 +70,7 @@
     var toggleZoom = function() {
       zoomActivated = !zoomActivated
 
-      const zoomLevel = zoomActivated ? 2 : 1
+      const zoomLevel = zoomActivated ? 4 : 1
       document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ zoom: zoomLevel }]})
               .then(() => document.getElementById('log').textContent += 'zoom activated\r\n' )
               .catch((err) => document.getElementById('log').textContent += 'error turning on zoom' + err + '\r\n')
