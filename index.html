@@ -54,9 +54,9 @@
     })
 
     setTimeout(()=> {
-      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ torch: true }]})
-              .then(() => document.getElementById('log').textContent += 'torch turned on\r\n' )
-              .catch((err) => document.getElementById('log').textContent += 'error turning on torch' + err + '\r\n')
+      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ zoom: 2 }]})
+              .then(() => document.getElementById('log').textContent += 'zoom activated\r\n' )
+              .catch((err) => document.getElementById('log').textContent += 'error turning on zoom' + err + '\r\n')
     }, 5000);
   </script>
 </body>
