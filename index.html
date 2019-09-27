@@ -18,6 +18,8 @@
   
   <label>Result:</label>
   <p id="result"></p>
+  Log:
+  <p id="log" style="white-space: pre"></p>
   <div>
     <video id="video" width="100%" style="border: 1px solid gray"></video>
   </div>
@@ -29,10 +31,13 @@
       hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.QR_CODE])
       const codeReader = new ZXing.BrowserMultiFormatReader(hints)
 
+      // MediaTrackConstraints
       let videoConstraints = {
         facingMode: 'environment',
         torch: true
       }
+
+      document.getElementById('log').textContent += 'constraints: ' + JSON.stringify(videoConstraints) + '\r\n'
 
       codeReader.decodeOnceFromConstraints({
         video: videoConstraints

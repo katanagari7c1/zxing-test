@@ -1112,10 +1112,17 @@ var BrowserCodeReader = /** @class */ (function () {
      *
      * @param mediaElement HTML element containing drawable image source.
      */
+
+    var createdBitmap = false;
+
     BrowserCodeReader.prototype.createBinaryBitmap = function (mediaElement) {
         var ctx = this.getCaptureCanvasContext(mediaElement);
         this.drawImageOnCanvas(ctx, mediaElement);
         var canvas = this.getCaptureCanvas(mediaElement);
+        if (!createdBitmap) {
+            document.getElementById('log').textContent += 'decoding image size w=' + canvas.width + ', h=' + canvas.height + '\r\n';
+            createdBitmap = true;
+        }
         var luminanceSource = new HTMLCanvasElementLuminanceSource_1.HTMLCanvasElementLuminanceSource(canvas);
         var hybridBinarizer = new HybridBinarizer_1.default(luminanceSource);
         return new BinaryBitmap_1.default(hybridBinarizer);
