@@ -58,21 +58,22 @@
 
     var torchEnabled = false;
     var toggleTorch = function() {
-      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ torch: !torchEnabled }]})
+      torchEnabled = !torchEnabled
+
+      document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ torch: torchEnabled }]})
               .then(() => document.getElementById('log').textContent += 'torch toggled\r\n' )
               .catch((err) => document.getElementById('log').textContent += 'error with torch' + err + '\r\n')
 
-      torchEnabled = !torchEnabled
     }
 
     var zoomActivated = false
     var toggleZoom = function() {
+      zoomActivated = !zoomActivated
+
       const zoomLevel = zoomActivated ? 2 : 1
       document.getElementById('video').srcObject.getVideoTracks()[0].applyConstraints({advanced: [{ zoom: zoomLevel }]})
               .then(() => document.getElementById('log').textContent += 'zoom activated\r\n' )
               .catch((err) => document.getElementById('log').textContent += 'error turning on zoom' + err + '\r\n')
-
-      zoomActivated = !zoomActivated
     }
   </script>
 </body>
