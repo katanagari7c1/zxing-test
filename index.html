@@ -21,6 +21,10 @@
   Log:
   <p id="log" style="white-space: pre"></p>
 
+  Track supported capabilities:
+  <ul id="constraintList">
+  </ul>
+
   <button onclick="toggleTorch()">Torch</button>
   <button onclick="toggleZoom()">Zoom</button>
   <div>
@@ -43,6 +47,20 @@
       }
 
       document.getElementById('log').textContent += 'constraints: ' + JSON.stringify(videoConstraints) + '\r\n'
+
+      setTimeout(function() {
+        // Supported constraints
+        let constraintList = document.getElementById("constraintList");
+        let supportedCapabilities = document.getElementById('video').srcObject.getVideoTracks()[0].getCapabilities();
+        for (let capability in supportedCapabilities) {
+          if (supportedCapabilities.hasOwnProperty(capability)) {
+            let elem = document.createElement("li");
+      
+            elem.innerHTML = "<code>" + capability + "</code>";
+            constraintList.appendChild(elem);
+          }
+        }
+      }, 5000);
 
       codeReader.decodeOnceFromConstraints({
         video: videoConstraints
