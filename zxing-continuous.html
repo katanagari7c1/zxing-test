@@ -10,11 +10,7 @@
 </head>
 
 <body>
-  <h1>Scan EAN13, CODE128 and QRCode using ZXing (latest)</h1>
-  <ul>
-    <li><a href="zxing-continuous.html">Try continuous scanning with hidden video element</a></li>
-    <li><a href="quagga.html">Try with Quagga</a></li>
-  </ul>
+  <h1>Scan EAN13, CODE128 and QRCode using ZXing (latest) in continuous mode</h1>
   
   <label>Result:</label>
   <p id="result"></p>
@@ -28,7 +24,7 @@
   <button onclick="toggleTorch()">Torch</button>
   <button onclick="toggleZoom()">Zoom</button>
   <div>
-    <video id="video" width="100%" style="border: 1px solid gray"></video>
+    <video id="video" width="500px" style="visibility: hidden;"></video>
   </div>
 
   <script type="text/javascript">
@@ -61,16 +57,18 @@
         }
       }, 5000);
 
-      codeReader.decodeOnceFromConstraints({
+      codeReader.decodeFromConstraints({
         video: videoConstraints
-      },'video')
-      //codeReader.decodeFromInputVideoDevice(undefined, 'video')
-        .then((result) => {
-          document.getElementById('result').textContent = result.text
-        })
-        .catch((err) => {
+      },
+      'video',
+      (result) => {
+        if (result) {
+          document.getElementById('result').textContent = result.text;
+        }
+      })
+      .catch((err) => {
           document.getElementById('result').textContent = err
-        })
+      })
     })
 
     var torchEnabled = false;
