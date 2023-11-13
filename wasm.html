@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ZXing example</title>
+</head>
+
+<body>
+<h1>Scan EAN13, QRCODE, Code128 and DataBar using ZXing-WASM (v1.0.0-rc5)</h1>
+<ul>
+    <li><a href="index.html">Try with ZXing-js</a></li>
+</ul>
+
+<label>Result:</label>
+<p id="result"></p>
+Log:
+<p id="log" style="white-space: pre"></p>
+
+Track supported capabilities:
+<ul id="constraintList">
+</ul>
+
+<div>
+    <canvas id="canvas" style="border: 1px solid rgb(128,128,128)"  width="640" height="480"></canvas>
+</div>
+
+<script type="module">
+    import { readBarcodesFromImageData } from 'https://unpkg.com/zxing-wasm@1.0.0-rc.5';
+    const decodeHints = {
+        tryHarder: true,
+        tryRotate: true,
+        tryInvert: false,
+        tryDownscale: true,
+        maxNumberOfSymbols: 1,
+        formats: ["EAN-13", "DataBarExpanded", "Code128", "QRCode"]
+    };
+
+ const canvas = document.getElementById("canvas");
+ const result = document.getElementById("result");
+ const ctx = canvas.getContext("2d", { willReadFrequently: true });
+ const video = document.createElement("video");
+ video.setAttribute("id", "video");
+ video.setAttribute("width", canvas.width);
+ video.setAttribute("height", canvas.height);
+ video.setAttribute("autoplay", "");
+
+    navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+            aspectRatio: {exact: 1},
+            facingMode: 'environment',
+            height: canvas.height,
+            width: canvas.width
+        }
+    })
+        .then(stream => {
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                video.play();
+                processFrame()
+            };
+        })
+        .catch(console.error);
+
+ const processFrame = function () {
+     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    readBarcodesFromImageData(ctx.getImageData(0,0,canvas.width, canvas.height), decodeHints)
+        .then(imageDataReadResults => {
+            let imageResult = imageDataReadResults[0];
+            if (imageResult != null) {
+                console.log('result!', imageResult);
+                result.innerText = `${imageResult.text} (type: ${imageResult.format})`;
+            }
+            requestAnimationFrame(processFrame);
+        });
+
+ };
+
+ navigator.mediaDevices
+     .getUserMedia({ video: { facingMode: "environment" }, audio: false })
+     .then(function (stream) {
+         video.srcObject = stream;
+         video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+         video.play();
+         processFrame();
+     })
+     .catch(function (error) {
+         console.error("Error accessing camera:", error);
+     });
+</script>
+</body>
+</html>
