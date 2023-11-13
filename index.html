@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <h1>Scan EAN13, CODE128, RSS_EXPANDED and QRCode using ZXing (latest)</h1>
+  <h1>Scan EAN13, CODE128, RSS-14, RSS_EXPANDED and QRCode using ZXing (latest)</h1>
   <ul>
     <li><a href="zxing-continuous.html">Try continuous scanning with hidden video element</a></li>
     <li><a href="quagga.html">Try with Quagga</a></li>
@@ -34,7 +34,7 @@
   <script type="text/javascript">
     window.addEventListener('load', function () {
       const hints = new Map();
-      hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.QR_CODE, ZXing.BarcodeFormat.RSS_EXPANDED])
+      hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.QR_CODE, ZXing.BarcodeFormat.RSS_EXPANDED, ZXing.BarcodeFormat.RSS_14])
       const codeReader = new ZXing.BrowserMultiFormatReader(hints)
 
       // MediaTrackConstraints
