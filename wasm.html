@@ -83,14 +83,22 @@ Track supported capabilities:
      .getUserMedia({
          video: {
              facingMode: 'environment',
-             height: { ideal: 1080 },
-             focusMode: { ideal: 'continuous' },
-             advanced: [{ zoom: 2.0 }]
+             height: { ideal: 1080 }
          },
          audio: false
      })
      .then(function (stream) {
          video.srcObject = stream;
+         const videoTrack = stream.getVideoTracks()[0];
+         if (videoTrack.getCapabilities().focusMode) {
+             videoTrack.applyConstraints({
+                 advanced: [{ focusMode: 'continuous' }]
+             })
+         }
+         else {
+             console.log('focus mode unchanged');
+         }
+
          video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
          video.play();
          processFrame();
