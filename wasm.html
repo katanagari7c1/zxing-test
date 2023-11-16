@@ -80,7 +80,15 @@ Track supported capabilities:
  };
 
  navigator.mediaDevices
-     .getUserMedia({ video: { facingMode: "environment" }, audio: false })
+     .getUserMedia({
+         video: {
+             facingMode: 'environment',
+             height: { ideal: 1080 },
+             focusMode: { ideal: 'continuous' },
+             advanced: [{ zoom: 2.0 }]
+         },
+         audio: false
+     })
      .then(function (stream) {
          video.srcObject = stream;
          video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
