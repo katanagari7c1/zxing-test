@@ -71,7 +71,6 @@ Track supported capabilities:
         .then(imageDataReadResults => {
             let imageResult = imageDataReadResults[0];
             if (imageResult != null) {
-                console.log('result!', imageResult);
                 result.innerText = `${imageResult.text} (type: ${imageResult.format})`;
             }
             requestAnimationFrame(processFrame);
@@ -83,21 +82,12 @@ Track supported capabilities:
      .getUserMedia({
          video: {
              facingMode: 'environment',
-             height: { ideal: 1080 }
+             height: { ideal: 3000 }
          },
          audio: false
      })
      .then(function (stream) {
          video.srcObject = stream;
-         const videoTrack = stream.getVideoTracks()[0];
-         if (videoTrack.getCapabilities().focusMode) {
-             videoTrack.applyConstraints({
-                 advanced: [{ focusMode: 'continuous' }]
-             })
-         }
-         else {
-             console.log('focus mode unchanged');
-         }
 
          video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
          video.play();
